@@ -68,24 +68,5 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    // Explicit setters if Lombok's @Data is not working properly
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setDuration(float duration) {
-        this.duration = duration;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-}
+   }
