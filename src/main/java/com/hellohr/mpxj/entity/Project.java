@@ -46,16 +46,5 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    // Explicit setters if Lombok's @Data is not working properly
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
     }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-}
