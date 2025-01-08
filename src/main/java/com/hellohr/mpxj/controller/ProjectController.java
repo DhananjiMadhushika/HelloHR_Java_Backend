@@ -31,10 +31,10 @@ public class ProjectController {
             file.transferTo(tempFile);
 
             // Parse and save the MPP data
-            List<Map<String, Object>> projectHierarchy = mppService.parseAndSaveMpp(tempFile.getAbsolutePath());
+            List<Map<String, Object>> projectTask = mppService.parseAndSaveMpp(tempFile.getAbsolutePath());
 
             // Prepare a response DTO with the project hierarchy
-            ProjectResponseDto response = new ProjectResponseDto("File processed successfully.", projectHierarchy);
+            ProjectResponseDto response = new ProjectResponseDto("File processed successfully.", projectTask);
 
             // Return the hierarchical structure
             return new ResponseEntity<>(response, HttpStatus.OK);

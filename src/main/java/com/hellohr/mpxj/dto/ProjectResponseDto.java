@@ -6,12 +6,12 @@ import java.util.Map;
 public class ProjectResponseDto {
 
     private String message;
-    private List<Map<String, Object>> projectHierarchy;
+    private List<Map<String, Object>> projectTask;
 
     // Constructor
-    public ProjectResponseDto(String message, List<Map<String, Object>> projectHierarchy) {
+    public ProjectResponseDto(String message, List<Map<String, Object>> projectTask) {
         this.message = message;
-        this.projectHierarchy = projectHierarchy;
+        this.projectTask = projectTask;
     }
 
     // Getters and Setters
@@ -23,11 +23,11 @@ public class ProjectResponseDto {
         this.message = message;
     }
 
-    public List<Map<String, Object>> getProjectHierarchy() {
-        return projectHierarchy;
+    public List<Map<String, Object>> getProjectTask() {
+        return projectTask;
     }
 
     public void setProjectHierarchy(List<Map<String, Object>> projectHierarchy) {
-        this.projectHierarchy = projectHierarchy;
+        this.projectTask = projectTask;
     }
 }

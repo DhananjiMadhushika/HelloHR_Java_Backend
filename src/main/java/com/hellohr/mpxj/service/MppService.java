@@ -7,6 +7,7 @@ import com.hellohr.mpxj.repository.TaskRepository;
 import net.sf.mpxj.*;
 import net.sf.mpxj.mpp.MPPReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.DurationUnit;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.HashMap;
@@ -38,16 +39,16 @@ public class MppService {
 
         // Map to hold tasks by their IDs for parent-child relationships
         Map<Integer, Task> taskMap = new HashMap<>();
-        List<Map<String, Object>> projectHierarchy = new ArrayList<>();
+        List<Map<String, Object>> projectTask = new ArrayList<>();
 
         // Recursive method to build the task hierarchy
         for (net.sf.mpxj.Task mpxjTask : projectFile.getChildTasks()) {
             Map<String, Object> taskHierarchy = processTask(mpxjTask, project, taskMap, null); // Pass null as parentTask
-            projectHierarchy.add(taskHierarchy);
+            projectTask.add(taskHierarchy);
         }
 
 
-        return projectHierarchy;
+        return projectTask;
     }
 
     private Map<String, Object> processTask(net.sf.mpxj.Task mpxjTask, Project project, Map<Integer, Task> taskMap, Task parentTask) {
@@ -56,15 +57,26 @@ public class MppService {
         taskEntity.setName(mpxjTask.getName());
         taskEntity.setStartTime(mpxjTask.getStart());
         taskEntity.setEndTime(mpxjTask.getFinish());
+        taskEntity.setCode(mpxjTask.getID());
+
+
 
         if (mpxjTask.getDuration() != null) {
-            taskEntity.setDuration((float) mpxjTask.getDuration().getDuration());
+            Duration duration = mpxjTask.getDuration();
+            double durationValue = duration.getDuration();
+            TimeUnit durationUnit = duration.getUnits(); // Get units as DurationUnit enum
+
+            // Handle different units (hours, days)
+            if (durationUnit == TimeUnit.HOURS) {
+                taskEntity.setDuration((float) durationValue); // Save duration in hours
+            } else if (durationUnit == TimeUnit.DAYS) {
+                taskEntity.setDuration((float) (durationValue * 24)); // Convert days to hours if it's in days
+            }
         }
 
         if (mpxjTask.getPercentageComplete() != null) {
             taskEntity.setComplete(mpxjTask.getPercentageComplete().intValue());
         }
-
         taskEntity.setTaskMode(mpxjTask.getTaskMode().toString());
         taskEntity.setProject(project);
         taskEntity.setParentTask(parentTask); // Set the parent task
@@ -88,10 +100,25 @@ public class MppService {
 
         // Build the hierarchical structure
         Map<String, Object> taskHierarchy = new HashMap<>();
-        taskHierarchy.put("id", mpxjTask.getID());
+        taskHierarchy.put("id", taskEntity.getId());
+        taskHierarchy.put("code", mpxjTask.getID());
         taskHierarchy.put("taskName", mpxjTask.getName());
-        taskHierarchy.put("duration", mpxjTask.getDuration() != null ? mpxjTask.getDuration().getDuration() : 0);
-        taskHierarchy.put("completePercentage", mpxjTask.getPercentageComplete() != null ? mpxjTask.getPercentageComplete() : 0);
+        if (mpxjTask.getDuration() != null) {
+            Duration duration = mpxjTask.getDuration();
+            double durationValue = duration.getDuration();
+            TimeUnit durationUnit = duration.getUnits(); // Get units as DurationUnit enum
+
+            // Handle different units (hours, days)
+            if (durationUnit == TimeUnit.HOURS) {
+                taskHierarchy.put("duration", durationValue); // Duration is in hours
+            } else if (durationUnit == TimeUnit.DAYS) {
+                taskHierarchy.put("duration", durationValue * 24); // Convert days to hours
+            } else {
+                taskHierarchy.put("duration", 0); // Default case if unit is neither hours nor days
+            }
+        } else {
+            taskHierarchy.put("duration", 0); // Default if duration is null
+        } taskHierarchy.put("completePercentage", mpxjTask.getPercentageComplete() != null ? mpxjTask.getPercentageComplete() : 0);
         taskHierarchy.put("parentTaskId", parentTask != null ? parentTask.getId() : null); // Include parent task ID
         taskHierarchy.put("start", mpxjTask.getStart());
         taskHierarchy.put("finish", mpxjTask.getFinish());
