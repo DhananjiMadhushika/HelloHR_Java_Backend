@@ -2,7 +2,11 @@ package com.hellohr.mpxj.repository;
 
 import com.hellohr.mpxj.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    Task findByCode(String code);  // Find task by its code
+    List<Task> findByProjectId(Long projectId);
 }
