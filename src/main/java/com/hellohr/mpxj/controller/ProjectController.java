@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/projects")
@@ -30,12 +31,12 @@ public class ProjectController {
             file.transferTo(tempFile);
 
             // Parse and save the MPP data
-            List<String> projectAndTaskNames = mppService.parseAndSaveMpp(tempFile.getAbsolutePath());
+            List<Map<String, Object>> projectHierarchy = mppService.parseAndSaveMpp(tempFile.getAbsolutePath());
 
-            // Prepare a response DTO with the project and task names
-            ProjectResponseDto response = new ProjectResponseDto("File processed successfully.", projectAndTaskNames);
+            // Prepare a response DTO with the project hierarchy
+            ProjectResponseDto response = new ProjectResponseDto("File processed successfully.", projectHierarchy);
 
-            // Return a response with project and task names as JSON
+            // Return the hierarchical structure
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             // Return an error response with error message
@@ -43,4 +44,5 @@ public class ProjectController {
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

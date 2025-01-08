@@ -46,12 +46,14 @@
 		</dependency>
 
 		<!-- Lombok -->
+		<!-- Updated Lombok version -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.28</version>
+			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
+
 
 		<!-- Spring Boot Test Starter -->
 		<dependency>
@@ -67,15 +69,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.1</version> <!-- Latest version as of 2025 -->
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<source>20</source>
+					<target>20</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.28</version>
+							<version>1.18.30</version> <!-- Ensure compatible version -->
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
@@ -83,6 +85,7 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
+
 
 			<!-- Spring Boot Maven Plugin -->
 			<plugin>

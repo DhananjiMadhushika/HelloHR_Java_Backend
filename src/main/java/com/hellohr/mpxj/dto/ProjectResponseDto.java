@@ -1,16 +1,17 @@
 package com.hellohr.mpxj.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProjectResponseDto {
 
     private String message;
-    private List<String> projectAndTaskNames;
+    private List<Map<String, Object>> projectHierarchy;
 
     // Constructor
-    public ProjectResponseDto(String message, List<String> projectAndTaskNames) {
+    public ProjectResponseDto(String message, List<Map<String, Object>> projectHierarchy) {
         this.message = message;
-        this.projectAndTaskNames = projectAndTaskNames;
+        this.projectHierarchy = projectHierarchy;
     }
 
     // Getters and Setters
@@ -22,11 +23,11 @@ public class ProjectResponseDto {
         this.message = message;
     }
 
-    public List<String> getProjectAndTaskNames() {
-        return projectAndTaskNames;
+    public List<Map<String, Object>> getProjectHierarchy() {
+        return projectHierarchy;
     }
 
-    public void setProjectAndTaskNames(List<String> projectAndTaskNames) {
-        this.projectAndTaskNames = projectAndTaskNames;
+    public void setProjectHierarchy(List<Map<String, Object>> projectHierarchy) {
+        this.projectHierarchy = projectHierarchy;
     }
 }
