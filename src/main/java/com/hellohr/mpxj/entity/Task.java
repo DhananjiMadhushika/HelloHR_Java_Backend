@@ -68,5 +68,13 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    @ManyToMany
+    @JoinTable(
+            name = "task_resource", // Define the join table name
+            joinColumns = @JoinColumn(name = "task_id"), // Column for Task
+            inverseJoinColumns = @JoinColumn(name = "resource_id") // Column for Resource
+    )
+    private List<Resource> resources = new ArrayList<>();
+
 
    }

@@ -4,14 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ProjectResponseDto {
-
     private String message;
-    private List<Map<String, Object>> projectTask;
+    private String projectName;
+    private String projectDescription;
+    private String projectCode;
+    private List<Map<String, Object>> projectTasks;
 
-    // Constructor
-    public ProjectResponseDto(String message, List<Map<String, Object>> projectTask) {
+    public ProjectResponseDto(String message, String projectName, String projectDescription, String projectCode, List<Map<String, Object>> projectTasks) {
         this.message = message;
-        this.projectTask = projectTask;
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.projectCode = projectCode;
+        this.projectTasks = projectTasks;
     }
 
     // Getters and Setters
@@ -23,11 +27,35 @@ public class ProjectResponseDto {
         this.message = message;
     }
 
-    public List<Map<String, Object>> getProjectTask() {
-        return projectTask;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProjectHierarchy(List<Map<String, Object>> projectHierarchy) {
-        this.projectTask = projectTask;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public List<Map<String, Object>> getProjectTasks() {
+        return projectTasks;
+    }
+
+    public void setProjectTasks(List<Map<String, Object>> projectTasks) {
+        this.projectTasks = projectTasks;
     }
 }
