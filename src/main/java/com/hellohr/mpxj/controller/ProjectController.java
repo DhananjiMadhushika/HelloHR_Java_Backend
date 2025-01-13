@@ -24,18 +24,28 @@ public class ProjectController {
     private MppService mppService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Object> uploadProject(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Object> uploadProject(
+            @RequestParam("name") String name,
+            @RequestParam("code") String code,
+            @RequestParam("description") String description,
+            @RequestParam("file") MultipartFile file)
+    {
         try {
             // Create temporary file from the uploaded MPP file
             File tempFile = File.createTempFile("mpp", ".mpp");
             file.transferTo(tempFile);
 
             // Parse and save the MPP data
-            List<Map<String, Object>> projectTask = mppService.parseAndSaveMpp(tempFile.getAbsolutePath());
+            List<Map<String, Object>> projectTask = mppService.parseAndSaveMpp(tempFile.getAbsolutePath(), name, code, description);
 
             // Prepare a response DTO with the project hierarchy
-            ProjectResponseDto response = new ProjectResponseDto("File processed successfully.", projectTask);
-
+            ProjectResponseDto response = new ProjectResponseDto(
+                    "File processed successfully.",
+                    name,
+                    code,
+                    description,
+                    projectTask
+            );
             // Return the hierarchical structure
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
