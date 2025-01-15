@@ -2,14 +2,14 @@ package com.hellohr.mpxj.controller;
 
 import com.hellohr.mpxj.dto.ErrorResponseDto;
 import com.hellohr.mpxj.dto.ProjectResponseDto;
+import com.hellohr.mpxj.entity.Project;
 import com.hellohr.mpxj.service.MppService;
+import com.hellohr.mpxj.service.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -52,6 +52,26 @@ public class ProjectController {
             // Return an error response with error message
             ErrorResponseDto errorResponse = new ErrorResponseDto("Error processing file", e.getMessage());
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Autowired
+    private ProjectService projectService;
+
+    @GetMapping("/details")
+    public ResponseEntity<Object> getProjectByCode(@RequestParam("code") String code) {
+        try {
+            // Fetch project by code
+            Project project = projectService.getProjectByCode(code);
+
+            // Map project to response DTO
+            ProjectResponseDto response = projectService.mapToResponseDto(project);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponseDto("Project not found", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ErrorResponseDto("Error fetching project details", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
